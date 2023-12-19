@@ -1,10 +1,13 @@
 // Player.js
 export default class Player {
-    constructor(x, y) {
+    constructor(x, y, width, height) {
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
         this.yVelocity = 0;
         this.onGround = true;
+        this.finished = false;
     }
 
     jump(level, gravity) {
