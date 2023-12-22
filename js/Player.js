@@ -31,12 +31,12 @@ export default class Player {
 
         let moveSpeed = level.width * 0.01; // 1% of screen width per frame
 
-        if (level.keyIsDown(constants.KEY_A) || gamma < 0) {
+        if (level.keyIsDown(constants.KEY_A) || level.keyIsDown(constants.LEFT_ARROW) || gamma < 0) {
             this.x -= moveSpeed;
             if (this.x + 50 < 0) {
                 this.x = level.width;
             }
-        } else if (level.keyIsDown(constants.KEY_D) || gamma > 0) {
+        } else if (level.keyIsDown(constants.KEY_D) || level.keyIsDown(constants.RIGHT_ARROW) || gamma > 0) {
             this.x += moveSpeed;
 
             if (this.x > level.width) {
