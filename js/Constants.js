@@ -7,5 +7,5 @@ export const gravity = 0.5;
 export const jumpForce = -15;
 
 // platform variables
-export const MAX_WIDTH = 150;
-export const MIN_WIDTH = 100;
+export const MAX_WIDTH = 160;
+export const MIN_WIDTH = 110;

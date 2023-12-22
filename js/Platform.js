@@ -1,3 +1,4 @@
+import * as constants from './Constants.js';
 export default class Platform {
     constructor(x, y, width, height, finish) {
         this.x = x;
@@ -7,10 +8,10 @@ export default class Platform {
         this.finish = finish;
     }
 
-    draw(level, MAX_WIDTH, MIN_WIDTH) {
+    draw(level) {
         let actualX = this.x * level.width;
         let actualY = this.y * level.height;
-        let actualWidth = Math.min(Math.max(this.width * level.width, MIN_WIDTH), MAX_WIDTH);
+        let actualWidth = Math.min(Math.max(this.width * level.width, constants.MIN_WIDTH), constants.MAX_WIDTH);
         let actualHeight = this.height * level.height;
         if (this.finish) {
             level.fill(0, 255, 255);
@@ -20,13 +21,14 @@ export default class Platform {
         level.rect(actualX, actualY, actualWidth, actualHeight);
     }
 
-    checkCollision(player, levelWidth, levelHeight, cameraY) {
-        let playerBottom = player.y + player.height + cameraY;
-        let platformTop = this.y * levelHeight + cameraY;
-        let platformBottom = (this.y + this.height) * levelHeight + cameraY;
+    checkCollision(player, level) {
+        let playerBottom = player.y + player.height;
+        let platformTop = this.y * level.height;
+        let platformBottom = (this.y + this.height) * level.height;
         let playerRight = player.x + player.width;
-        let platformLeft = this.x * levelWidth;
-        let platformRight = (this.x + this.width) * levelWidth;
+        let platformLeft = this.x * level.width;
+        let actualWidth = Math.min(Math.max(this.width * level.width, constants.MIN_WIDTH), constants.MAX_WIDTH);
+        let platformRight = this.x * level.width + actualWidth;
 
         if (
             playerBottom > platformTop &&
@@ -42,6 +44,8 @@ export default class Platform {
             if (this.finish) {
                 console.log('Level finished!');
                 player.finished = true;
+                level.currentLevel++;
+                level.highestLevel = Math.max(level.highestLevel, level.currentLevel);
             }
         }
     }

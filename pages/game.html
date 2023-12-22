@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="sk">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <link rel="stylesheet" href="../css/style.css" />
+        <script src="../node_modules/p5/lib/p5.min.js"></script>
+        <script type="module" src="../js/Game.js"></script>
+        <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+        <title>Skúškové Zadanie</title>
+    </head>
+    <body>
+        <div class="container">
+            <div id="canvas-container">
+                <!-- p5.js will insert the canvas here -->
+                <h1 class="p-0 m-0" id="gammaDebug">gamma:</h1>
+            </div>
+        </div>
+
+        <!-- Game Over Modal -->
+        <div
+            class="modal fade"
+            id="gameOverModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="gameOverModalLabel"
+            aria-hidden="true"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="gameOverModalLabel">Game Over</h5>
+                    </div>
+                    <div class="modal-body" id="ModalText">
+                        <p>Your game is over. Play again?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="playAgainButton" class="btn btn-primary">Play Again</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    </body>
+</html>

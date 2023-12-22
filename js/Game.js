@@ -1,25 +1,31 @@
-import * as constants from './Constants.js';
 import Player from './Player.js';
 import Platform from './Platform.js';
 
-document.getElementById('playAgainButton').addEventListener('click', function () {
-    location.reload();
-});
+let levelID = localStorage.getItem('selectedLevelId');
+let levelAmmount = 0;
 
 let sketch = (level) => {
     let player;
     let gamma = 0;
     let cameraY = 0;
     let platforms = [];
+    let levels = []; // Array to store all levels
 
     level.preload = () => {
-        level.loadJSON('./levels.json', (data) => {
-            let levelData = data.levels[0]; // Load the first level
-            for (let platformData of levelData.platforms) {
-                let platform = new Platform(platformData.x, platformData.y, platformData.width, platformData.height, platformData.finish);
-                platforms.push(platform);
+        level.loadJSON('../levels.json', (data) => {
+            // Load all levels
+            for (let levelData of data.levels) {
+                let platforms = [];
+                for (let platformData of levelData.platforms) {
+                    let platform = new Platform(platformData.x, platformData.y, platformData.width, platformData.height, platformData.finish);
+                    platforms.push(platform);
+                }
+                levels.push({ id: levelData.id, platforms: platforms });
             }
+            levelAmmount = levels.length;
         });
+        console.log('LOADED LEVELS');
+        console.log(levels);
     };
 
     level.setup = () => {
@@ -28,7 +34,7 @@ let sketch = (level) => {
         level.background(200);
         level.windowResized(); // Ensure correct canvas size at start
         player = new Player(level.width / 2 - 25, level.height - 50, 50, 50); // Create a new player object
-        console.log('init');
+        platforms = levels[levelID - 1].platforms;
 
         if (window.DeviceOrientationEvent) {
             window.addEventListener('deviceorientation', function (event) {
@@ -37,33 +43,18 @@ let sketch = (level) => {
         } else {
             console.log('DeviceOrientationEvent is not supported');
         }
+        console.log('init');
     };
 
     level.draw = () => {
         level.translate(0, -cameraY);
         level.background(200);
         level.handlePlayer();
-        for (let platform of platforms) {
-            platform.draw(level, constants.MAX_WIDTH, constants.MIN_WIDTH);
-            platform.checkCollision(player, level.width, level.height, 0);
-        }
-        document.getElementById('gammaDebug').textContent = 'gamma: ' + gamma.toFixed(3);
+        level.handlePlatforms();
+        level.checkWinLoseCondition();
 
-        if (player.y > cameraY + level.height) {
-            // Game over
-            var gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
-            document.getElementById('gameOverModalLabel').textContent = 'Game Over';
-            document.getElementById('ModalText').textContent = 'Your game is over. Play again?';
-            gameOverModal.show();
-            level.noLoop();
-        } else if (platforms[0].finish && player.finished) {
-            // Level finished
-            var gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
-            document.getElementById('gameOverModalLabel').textContent = 'Level Finished';
-            document.getElementById('ModalText').textContent = 'Congrats you Won!';
-            gameOverModal.show();
-            level.noLoop();
-        }
+        if (gamma === null) gamma = 0;
+        document.getElementById('gammaDebug').textContent = 'gamma: ' + gamma.toFixed(3);
     };
 
     level.windowResized = () => {
@@ -75,12 +66,56 @@ let sketch = (level) => {
     level.handlePlayer = () => {
         level.fill(255, 0, 0);
         level.rect(player.x, player.y, player.width, player.height);
-        player.jump(level, constants.gravity);
-        player.input(level, constants, gamma);
+        player.jump(level);
+        player.input(level, gamma);
         if (player.y < cameraY + level.height / 2) {
             cameraY = player.y - level.height / 2;
         }
     };
+
+    level.checkWinLoseCondition = () => {
+        if (player.y > cameraY + level.height) {
+            // Game over
+            var gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
+            document.getElementById('gameOverModalLabel').textContent = 'Game Over';
+            document.getElementById('ModalText').textContent = 'Your game is over. Play again?';
+
+            gameOverModal.show();
+            player.dead = true;
+            level.noLoop();
+        } else if (platforms[0].finish && player.finished) {
+            // Level finished
+            let completedLevelId = levelID; // Replace this with the actual completed level id
+            localStorage.setItem(`level${completedLevelId}Completed`, 'true');
+            let nextLevelId = completedLevelId + 1;
+            localStorage.setItem('highestUnlockedLevelId', nextLevelId.toString());
+            var gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
+            document.getElementById('gameOverModalLabel').textContent = 'Level Finished';
+            document.getElementById('ModalText').textContent = 'Congrats you Won!';
+            gameOverModal.show();
+            levelID++;
+            level.noLoop();
+        }
+    };
+
+    level.handlePlatforms = () => {
+        for (let platform of platforms) {
+            platform.draw(level);
+            platform.checkCollision(player, level);
+        }
+    };
 };
 
-new p5(sketch);
+document.getElementById('playAgainButton').addEventListener('click', function () {
+    var gameOverModalElement = document.getElementById('gameOverModal');
+    var gameOverModal = bootstrap.Modal.getInstance(gameOverModalElement);
+    if (levelID > levelAmmount) {
+        window.location.href = '../index.html';
+    }
+    gameOverModal.hide();
+    currentLevel.remove();
+    currentLevel = new p5(sketch);
+});
+
+let currentLevel = new p5(sketch);
+console.log(levelID);
