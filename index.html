@@ -9,16 +9,26 @@
         <script type="module" src="js/MainMenu.js"></script>
         <title>Skúškové Zadanie</title>
         <title>Main Menu</title>
-    </head>
-    <body>
-        <div class="container">
-            <h1>Jumping Ape</h1>
-            <ul>
-                <button id="startGameButton">Start Game</button>
-                <li><a href="pages/levels.html">Level Select</a></li>
-            </ul>
-        </div>
+                <style>
+                    body {
 
-        <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    </body>
-</html>
+                            background-image: url("images/backgrounds/main_menu.svg");
+                            background-size: cover;
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            font-family: monospace;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+                    <h1 class="m-4 fs-1 font-weight-bold">Jumping Ape</h1>
+                    
+                        <button id="startGameButton" class="btn btn-info btn-rounded m-3 fs-2" data-mdb-ripple-init>Start Game</button>
+                        <a class="fs-2"  href="pages/levels.html">Level Select</a>
+                    
+                </div>
+
+                <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+            </body>
+        </html>
