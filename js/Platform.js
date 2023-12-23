@@ -42,7 +42,7 @@ export default class Platform {
             player.onGround = true;
 
             if (this.finish) {
-                console.log('Level finished!');
+                console.log('PLATFORM COLLISION: Level finished!');
                 player.finished = true;
                 level.currentLevel++;
                 level.highestLevel = Math.max(level.highestLevel, level.currentLevel);
