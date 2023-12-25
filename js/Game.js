@@ -10,6 +10,8 @@ let sketch = (level) => {
     let cameraY = 0;
     let platforms = [];
     let levels;
+    let playerImage;
+    let platformImage;
 
     level.preload = () => {
         level.loadJSON('../levels.json', (data) => {
@@ -18,11 +20,41 @@ let sketch = (level) => {
                 localStorage.setItem('levelAmount', levelAmount);
             }
             let platforms = [];
+            switch (data.levels[levelID - 1].area) {
+                case 'hell':
+                    platformImage = level.loadImage('../images/platforms/hell_platform.png');
+
+                    break;
+                case 'dirt':
+                    platformImage = level.loadImage('../images/platforms/ground_platform.png');
+
+                    break;
+                case 'rock':
+                    platformImage = level.loadImage('../images/platforms/mountain_platform.png');
+
+                    break;
+                case 'sky':
+                    platformImage = level.loadImage('../images/platforms/sky_platform.png');
+
+                    break;
+                case 'space':
+                    platformImage = level.loadImage('../images/platforms/space_platform.png');
+
+                    break;
+            }
             for (let platformData of data.levels[levelID - 1].platforms) {
-                let platform = new Platform(platformData.x, platformData.y, platformData.width, platformData.height, platformData.finish);
+                let platform = new Platform(
+                    platformData.x,
+                    platformData.y,
+                    platformData.width,
+                    platformData.height,
+                    platformData.finish,
+                    platformImage
+                );
                 platforms.push(platform);
             }
-            levels = { id: data.levels[levelID - 1].id, platforms: platforms };
+            levels = { id: data.levels[levelID - 1].id, area: data.levels[levelID - 1].area, platforms: platforms };
+            playerImage = level.loadImage('../images/jumping_monkey.png');
             console.log(levels);
         });
     };
@@ -31,9 +63,8 @@ let sketch = (level) => {
         let canvas = level.createCanvas(level.windowWidth, level.windowHeight);
         localStorage.setItem(`level${levelID}Available`, 'true');
         canvas.parent('canvas-container');
-        level.background(200);
         level.windowResized();
-        player = new Player(level.width / 2 - 25, level.height - 50, 50, 50);
+        player = new Player(level.width / 2 - 25, level.height - 50, 50, 50, playerImage);
         platforms = levels.platforms;
 
         if (window.DeviceOrientationEvent) {
@@ -64,8 +95,7 @@ let sketch = (level) => {
     };
 
     level.handlePlayer = () => {
-        level.fill(255, 0, 0);
-        level.rect(player.x, player.y, player.width, player.height);
+        player.draw(level);
         player.jump(level);
         player.input(level, gamma);
         if (player.y < cameraY + level.height / 2) {

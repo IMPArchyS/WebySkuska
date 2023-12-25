@@ -1,11 +1,12 @@
 import * as constants from './Constants.js';
 export default class Platform {
-    constructor(x, y, width, height, finish) {
+    constructor(x, y, width, height, finish, img) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.finish = finish;
+        this.img = img;
     }
 
     draw(level) {
@@ -14,11 +15,16 @@ export default class Platform {
         let actualWidth = Math.min(Math.max(this.width * level.width, constants.MIN_WIDTH), constants.MAX_WIDTH);
         let actualHeight = this.height * level.height;
         if (this.finish) {
-            level.fill(0, 255, 255);
+            // level.fill(0, 255, 255);
+            level.tint(255, 0, 255);
+            level.image(this.img, actualX, actualY, actualWidth, actualHeight);
+            level.noTint();
         } else {
-            level.fill(255, 150, 100);
+            // level.fill(255, 150, 100);
+            level.image(this.img, actualX, actualY, actualWidth, actualHeight);
         }
-        level.rect(actualX, actualY, actualWidth, actualHeight);
+        // OLD PLATFORM DRAWING
+        // level.rect(actualX, actualY, actualWidth, actualHeight);
     }
 
     checkCollision(player, level) {

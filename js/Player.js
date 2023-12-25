@@ -1,7 +1,8 @@
 import * as constants from './Constants.js';
 
 export default class Player {
-    constructor(x, y, width, height) {
+    constructor(x, y, width, height, img) {
+        this.img = img;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -24,6 +25,10 @@ export default class Player {
             this.yVelocity = 0;
             this.onGround = true;
         }
+    }
+
+    draw(level) {
+        level.image(this.img, this.x, this.y, this.width, this.height);
     }
 
     input(level, gamma) {
