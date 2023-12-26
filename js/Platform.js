@@ -1,12 +1,13 @@
 import * as constants from './Constants.js';
 export default class Platform {
-    constructor(x, y, width, height, finish, img) {
+    constructor(x, y, width, height, finish, stable, img) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.finish = finish;
         this.img = img;
+        this.stable = stable;
     }
 
     draw(level) {
@@ -52,6 +53,10 @@ export default class Platform {
                 player.finished = true;
                 level.currentLevel++;
                 level.highestLevel = Math.max(level.highestLevel, level.currentLevel);
+            }
+            if (this.stable === false) {
+                console.log('UNSTABLE PLATFORM');
+                return true;
             }
         }
     }

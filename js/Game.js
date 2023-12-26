@@ -1,5 +1,6 @@
 import Player from './Player.js';
 import Platform from './Platform.js';
+import * as constants from './Constants.js';
 
 let levelID = parseInt(localStorage.getItem('selectedLevelId'));
 let levelAmount = parseInt(localStorage.getItem('levelAmount'));
@@ -9,7 +10,7 @@ let sketch = (level) => {
     let gamma = 0;
     let cameraY = 0;
     let platforms = [];
-    let levels;
+    let currentLevel;
     let playerImage;
     let platformImage;
     let themeColor = 200;
@@ -20,23 +21,13 @@ let sketch = (level) => {
                 levelAmount = data.levels.length;
                 localStorage.setItem('levelAmount', levelAmount);
             }
-            let platforms = [];
+            let plats = [];
             level.setLevelTheme(data.levels[levelID - 1].area);
+            plats = level.initPlatforms(data);
 
-            for (let platformData of data.levels[levelID - 1].platforms) {
-                let platform = new Platform(
-                    platformData.x,
-                    platformData.y,
-                    platformData.width,
-                    platformData.height,
-                    platformData.finish,
-                    platformImage
-                );
-                platforms.push(platform);
-            }
-            levels = { id: data.levels[levelID - 1].id, area: data.levels[levelID - 1].area, platforms: platforms };
+            currentLevel = { id: data.levels[levelID - 1].id, area: data.levels[levelID - 1].area, platforms: plats };
             playerImage = level.loadImage('../images/jumping_monkey.png');
-            console.log(levels);
+            console.log(currentLevel);
         });
     };
 
@@ -46,8 +37,8 @@ let sketch = (level) => {
         localStorage.setItem('selectedLevelId', levelID);
         canvas.parent('canvas-container');
         level.windowResized();
-        player = new Player(level.width / 2 - 25, level.height - 50, 50, 50, playerImage);
-        platforms = levels.platforms;
+        player = new Player(level.width / 2 - 25, level.height - 50, constants.PLAYER_WIDTH, constants.PLAYER_HEIGHT, playerImage);
+        platforms = currentLevel.platforms;
 
         if (window.DeviceOrientationEvent) {
             window.addEventListener('deviceorientation', function (event) {
@@ -109,7 +100,8 @@ let sketch = (level) => {
     level.handlePlatforms = () => {
         for (let platform of platforms) {
             platform.draw(level);
-            platform.checkCollision(player, level);
+            let destroy = platform.checkCollision(player, level);
+            if (destroy === true) platforms.pop();
         }
     };
 
@@ -141,6 +133,24 @@ let sketch = (level) => {
             default:
                 break;
         }
+    };
+
+    level.initPlatforms = (data) => {
+        let plats = [];
+        for (let platformData of data.levels[levelID - 1].platforms) {
+            let platform = new Platform(
+                platformData.x,
+                platformData.y,
+                platformData.width,
+                platformData.height,
+                platformData.finish,
+                platformData.stable,
+                platformImage
+            );
+            console.log(platform);
+            plats.push(platform);
+        }
+        return plats;
     };
 };
 
