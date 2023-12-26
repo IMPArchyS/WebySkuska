@@ -12,6 +12,7 @@ let sketch = (level) => {
     let levels;
     let playerImage;
     let platformImage;
+    let themeColor = 200;
 
     level.preload = () => {
         level.loadJSON('../levels.json', (data) => {
@@ -20,28 +21,8 @@ let sketch = (level) => {
                 localStorage.setItem('levelAmount', levelAmount);
             }
             let platforms = [];
-            switch (data.levels[levelID - 1].area) {
-                case 'hell':
-                    platformImage = level.loadImage('../images/platforms/hell_platform.png');
+            level.setLevelTheme(data.levels[levelID - 1].area);
 
-                    break;
-                case 'dirt':
-                    platformImage = level.loadImage('../images/platforms/ground_platform.png');
-
-                    break;
-                case 'rock':
-                    platformImage = level.loadImage('../images/platforms/mountain_platform.png');
-
-                    break;
-                case 'sky':
-                    platformImage = level.loadImage('../images/platforms/sky_platform.png');
-
-                    break;
-                case 'space':
-                    platformImage = level.loadImage('../images/platforms/space_platform.png');
-
-                    break;
-            }
             for (let platformData of data.levels[levelID - 1].platforms) {
                 let platform = new Platform(
                     platformData.x,
@@ -62,6 +43,7 @@ let sketch = (level) => {
     level.setup = () => {
         let canvas = level.createCanvas(level.windowWidth, level.windowHeight);
         localStorage.setItem(`level${levelID}Available`, 'true');
+        localStorage.setItem('selectedLevelId', levelID);
         canvas.parent('canvas-container');
         level.windowResized();
         player = new Player(level.width / 2 - 25, level.height - 50, 50, 50, playerImage);
@@ -79,7 +61,7 @@ let sketch = (level) => {
 
     level.draw = () => {
         level.translate(0, -cameraY);
-        level.background(200);
+        level.background(themeColor);
         level.handlePlayer();
         level.handlePlatforms();
         level.checkWinLoseCondition();
@@ -91,7 +73,7 @@ let sketch = (level) => {
     level.windowResized = () => {
         let containerWidth = level.select('#canvas-container').width;
         level.resizeCanvas(containerWidth, level.windowHeight);
-        level.background(200);
+        level.background(themeColor);
     };
 
     level.handlePlayer = () => {
@@ -128,6 +110,36 @@ let sketch = (level) => {
         for (let platform of platforms) {
             platform.draw(level);
             platform.checkCollision(player, level);
+        }
+    };
+
+    level.setLevelTheme = (area) => {
+        switch (area) {
+            case 'hell':
+                platformImage = level.loadImage('../images/platforms/hell_platform.png');
+                themeColor = level.color(87, 38, 39);
+                break;
+            case 'dirt':
+                platformImage = level.loadImage('../images/platforms/ground_platform.png');
+                themeColor = level.color(101, 69, 50);
+
+                break;
+            case 'rock':
+                platformImage = level.loadImage('../images/platforms/mountain_platform.png');
+                themeColor = level.color(75, 79, 116);
+
+                break;
+            case 'sky':
+                platformImage = level.loadImage('../images/platforms/sky_platform.png');
+                themeColor = level.color(10, 169, 216);
+
+                break;
+            case 'space':
+                platformImage = level.loadImage('../images/platforms/space_platform.png');
+                themeColor = level.color(32, 33, 43);
+
+            default:
+                break;
         }
     };
 };
