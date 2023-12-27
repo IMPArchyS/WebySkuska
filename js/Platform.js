@@ -18,9 +18,9 @@ export default class Platform {
         let actualHeight = this.height * level.height;
         if (this.finish) {
             // level.fill(0, 255, 255);
-            level.tint(255, 0, 255);
+            //level.tint(255, 0, 255);
             level.image(this.img, actualX, actualY, actualWidth, actualHeight);
-            level.noTint();
+            //level.noTint();
         } else {
             // level.fill(255, 150, 100);
             level.image(this.img, actualX, actualY, actualWidth, actualHeight);
@@ -60,6 +60,8 @@ export default class Platform {
                 console.log('PLATFORM COLLISION: UNSTABLE PLATFORM');
                 return true;
             }
+            return false;
         }
+        return false;
     }
 }

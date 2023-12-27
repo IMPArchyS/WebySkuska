@@ -27,6 +27,11 @@ export default class Player {
         }
     }
 
+    resize(newWidth, newHeight) {
+        this.width = newWidth;
+        this.height = newHeight;
+    }
+
     draw(level) {
         level.image(this.img, this.x, this.y, this.width, this.height);
     }
