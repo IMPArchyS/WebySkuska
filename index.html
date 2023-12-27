@@ -1,25 +1,35 @@
 <!DOCTYPE html>
 <html lang="sk">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <link rel="stylesheet" href="css/style.css" />
-        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel="icon" type="image/x-icon" href="favicon.ico" />
-        <script type="module" src="js/MainMenu.js"></script>
-        <title>Skúškové Zadanie</title>
-        <title>Main Menu</title>
-    </head>
-    <body class="menuBody">
-        <div class="container d-flex flex-column justify-content-center align-items-center" style="height: 100vh">
-            <h1 class="m-4 fs-1 font-weight-bold">Jumping Ape</h1>
 
-            <button id="startGameButton" class="btn btn-info btn-rounded m-3 fs-2" data-mdb-ripple-init>Start Game</button>
-            <button id="continueGameButton" class="btn btn-info btn-rounded m-3 fs-2" data-mdb-ripple-init>Continue</button>
-            <a class="fs-2" href="pages/levels.html">Level Select</a>
-            <a class="fs-2" href="pages/about.html">About</a>
-        </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script type="module" src="js/MainMenu.js"></script>
+    <title>Main Menu</title>
+</head>
 
-        <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    </body>
+<body class="menuBody">
+    <header class="m-0 d-flex flex-row justify-content-center align-items-center main-menu-header">
+        <h1 class="m-0 p-2 display-3 font-weight-bold text-uppercase text-center">Jumping Ape</h1>
+    </header>
+    <div class="gradient"></div>
+    <div class="container d-flex flex-column justify-content-start align-items-center"><img src="/images/monkey.gif"
+            alt="jumping_monkey" width="150" class="mt-4 mb-0">
+        <img src="/images/platforms/ground_platform.png" alt="jumping_monkey" width="150" class="m-4 mt-0">
+    </div>
+    <div class="container d-flex flex-column justify-content-start align-items-center" style="height: 100vh">
+        <button id="startGameButton" class="btn-custom btn btn-rounded m-3 fs-2" data-mdb-ripple-init>Start
+            Game</button>
+        <button id="continueGameButton" class="btn-custom btn btn-rounded m-3 fs-2"
+            data-mdb-ripple-init>Continue</button>
+        <a class="fs-2 no-underline" href="pages/levels.html">Select level</a>
+        <a class="fs-2 no-underline" href="pages/about.html">About</a>
+    </div>
+
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+
 </html>
