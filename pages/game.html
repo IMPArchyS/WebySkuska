@@ -5,15 +5,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <script src="../node_modules/p5/lib/p5.min.js"></script>
         <script type="module" src="../js/Game.js"></script>
+        <link rel="stylesheet" href="../css/style.css" />
         <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="icon" type="image/x-icon" href="../favicon.ico" />
         <title>Skúškové Zadanie</title>
     </head>
-    <body>
+    <body class="gameBody">
         <div class="container">
-            <div id="canvas-container">
+            <div id="canvas-container" class="position-relative">
+                <button id="pauseButton" class="btn btn-info btn-rounded m-0 fs-5 m-2 end-0 position-absolute">Pause</button>
                 <!-- p5.js will insert the canvas here -->
-                <h1 class="p-0 m-0" id="gammaDebug">gamma:</h1>
             </div>
         </div>
 
@@ -37,6 +38,7 @@
                         <p>Your game is over. Play again?</p>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" id="mainMenuButton" class="btn btn-primary">Main Menu</button>
                         <button type="button" id="playAgainButton" class="btn btn-primary">Play Again</button>
                     </div>
                 </div>

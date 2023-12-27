@@ -32,7 +32,7 @@ let sketch = (level) => {
     };
 
     level.setup = () => {
-        let canvas = level.createCanvas(level.windowWidth, level.windowHeight);
+        let canvas = level.createCanvas(level.windowWidth, level.windowHeight - 6);
         localStorage.setItem(`level${levelID}Available`, 'true');
         localStorage.setItem('selectedLevelId', levelID);
         canvas.parent('canvas-container');
@@ -47,6 +47,17 @@ let sketch = (level) => {
         } else {
             console.log('DeviceOrientationEvent is not supported');
         }
+
+        document.getElementById('pauseButton').addEventListener('click', function () {
+            let gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
+            document.getElementById('gameOverModalLabel').textContent = 'Game Paused';
+            document.getElementById('playAgainButton').textContent = 'Resume';
+            document.getElementById('ModalText').textContent = 'Game is paused choose option!';
+            gameOverModal.show();
+            level.noLoop();
+            console.log('test');
+        });
+
         console.log('// INIT OVER //');
     };
 
@@ -58,12 +69,12 @@ let sketch = (level) => {
         level.checkWinLoseCondition();
 
         if (gamma === null) gamma = 0;
-        document.getElementById('gammaDebug').textContent = 'gamma: ' + gamma.toFixed(3);
+        //document.getElementById('gammaDebug').textContent = 'gamma: ' + gamma.toFixed(3);
     };
 
     level.windowResized = () => {
         let containerWidth = level.select('#canvas-container').width;
-        level.resizeCanvas(containerWidth, level.windowHeight);
+        level.resizeCanvas(containerWidth, level.windowHeight - 6);
         level.background(themeColor);
     };
 
@@ -77,10 +88,17 @@ let sketch = (level) => {
     };
 
     level.checkWinLoseCondition = () => {
-        if (player.y > cameraY + level.height) {
+        // on ground and touched the first platform
+        if (player.y + player.height >= level.height && player.wasOnPlatform === true) {
+            console.log('LEVEL: hit ground after wasOnPlatform');
+            player.dead = true;
+        }
+
+        if (player.y > cameraY + level.height || player.dead) {
             // Game over
             let gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
             document.getElementById('gameOverModalLabel').textContent = 'Game Over';
+            document.getElementById('playAgainButton').textContent = 'Restart';
             document.getElementById('ModalText').textContent = 'Your game is over. Play again?';
 
             gameOverModal.show();
@@ -90,6 +108,7 @@ let sketch = (level) => {
             // Level finished
             let gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
             document.getElementById('gameOverModalLabel').textContent = 'Level Finished';
+            document.getElementById('playAgainButton').textContent = 'Next Level';
             document.getElementById('ModalText').textContent = 'Congrats you Won!';
             gameOverModal.show();
             levelID++;
@@ -147,7 +166,6 @@ let sketch = (level) => {
                 platformData.stable,
                 platformImage
             );
-            console.log(platform);
             plats.push(platform);
         }
         return plats;
@@ -163,6 +181,15 @@ document.getElementById('playAgainButton').addEventListener('click', function ()
         currentLevel.remove();
         currentLevel = new p5(sketch);
     }
+    gameOverModal.hide();
+});
+
+document.getElementById('mainMenuButton').addEventListener('click', function () {
+    let gameOverModalElement = document.getElementById('gameOverModal');
+    let gameOverModal = bootstrap.Modal.getInstance(gameOverModalElement);
+    window.location.href = '../index.html';
+    currentLevel.remove();
+    currentLevel = new p5(sketch);
     gameOverModal.hide();
 });
 

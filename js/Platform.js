@@ -8,6 +8,7 @@ export default class Platform {
         this.finish = finish;
         this.img = img;
         this.stable = stable;
+        this.wasOnPlatform = false;
     }
 
     draw(level) {
@@ -47,6 +48,7 @@ export default class Platform {
             player.y = platformTop - player.height;
             player.yVelocity = 0;
             player.onGround = true;
+            player.wasOnPlatform = true;
 
             if (this.finish) {
                 console.log('PLATFORM COLLISION: Level finished!');
@@ -55,7 +57,7 @@ export default class Platform {
                 level.highestLevel = Math.max(level.highestLevel, level.currentLevel);
             }
             if (this.stable === false) {
-                console.log('UNSTABLE PLATFORM');
+                console.log('PLATFORM COLLISION: UNSTABLE PLATFORM');
                 return true;
             }
         }
