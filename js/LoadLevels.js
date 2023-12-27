@@ -20,22 +20,27 @@ let sketch = (level) => {
         console.log(localStorage);
         for (let level of levels) {
             // create elements for each level
-            let levelElement = document.getElementsByName(`Level ${level.id}`);
+            let levelElement = getButtonByTextContent(`Level ${level.id}`);
             levelElement.textContent = `Level ${level.id}`;
 
             // if the level was played, level label is clickable & sends player to the level
             if (localStorage.getItem(`level${level.id}Available`) === 'true') {
-                levelElement.classList.add('completed');
-                levelElement.removeAttribute('disabled'); // Enable the button
-
+                levelElement.disabled = false;
                 levelElement.addEventListener('click', function () {
                     localStorage.setItem('selectedLevelId', level.id);
                     window.location.href = 'game.html';
                 });
-                console.log("looping");
             }
-            //document.getElementById('levels-container').appendChild(levelElement);
         }
+    }
+    function getButtonByTextContent(text) {
+        let buttons = document.getElementsByTagName('button');
+        for (let button of buttons) {
+            if (button.textContent === text) {
+                return button;
+            }
+        }
+        return null;
     }
 };
 
