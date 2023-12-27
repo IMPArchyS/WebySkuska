@@ -14,6 +14,7 @@ let sketch = (level) => {
     let playerImage;
     let platformImage;
     let themeColor = 200;
+    let bgImage;
 
     level.preload = () => {
         level.loadJSON('../levels.json', (data) => {
@@ -37,7 +38,7 @@ let sketch = (level) => {
         localStorage.setItem('selectedLevelId', levelID);
         canvas.parent('canvas-container');
         level.windowResized();
-        player = new Player(level.width / 2 - 25, level.height - 50, constants.PLAYER_WIDTH, constants.PLAYER_HEIGHT, playerImage);
+        player = new Player(level.width / 2 - 25, level.height, level.width * 0.082, level.height * 0.052, playerImage);
         platforms = currentLevel.platforms;
 
         if (window.DeviceOrientationEvent) {
@@ -48,22 +49,24 @@ let sketch = (level) => {
             console.log('DeviceOrientationEvent is not supported');
         }
 
-        document.getElementById('pauseButton').addEventListener('click', function () {
-            let gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
-            document.getElementById('gameOverModalLabel').textContent = 'Game Paused';
-            document.getElementById('playAgainButton').textContent = 'Resume';
-            document.getElementById('ModalText').textContent = 'Game is paused choose option!';
-            gameOverModal.show();
-            level.noLoop();
-            console.log('test');
-        });
-
         console.log('// INIT OVER //');
     };
 
     level.draw = () => {
         level.translate(0, -cameraY);
         level.background(themeColor);
+        // Calculate the number of times the background image needs to be drawn
+        let numImages = Math.ceil(level.height / bgImage.height) + 1;
+
+        // Draw the background images
+        for (let i = 0; i < numImages; i++) {
+            // Adjust the y-coordinate of the image based on the camera position
+            let y = i * bgImage.height + (cameraY % bgImage.height);
+            level.tint(255, 127); // Set the tint color to white with 50% opacity
+            level.image(bgImage, 0, y);
+            level.noTint();
+        }
+
         level.handlePlayer();
         level.handlePlatforms();
         level.checkWinLoseCondition();
@@ -75,6 +78,7 @@ let sketch = (level) => {
     level.windowResized = () => {
         let containerWidth = level.select('#canvas-container').width;
         level.resizeCanvas(containerWidth, level.windowHeight - 6);
+        if (player) player.resize(level.width * 0.082, level.height * 0.052);
         level.background(themeColor);
     };
 
@@ -89,7 +93,9 @@ let sketch = (level) => {
 
     level.checkWinLoseCondition = () => {
         // on ground and touched the first platform
-        if (player.y + player.height >= level.height && player.wasOnPlatform === true) {
+        if (player.y + player.height >= level.height - player.height * 0.082 && player.wasOnPlatform === true) {
+            console.log(player.y + player.height);
+            console.log(level.height);
             console.log('LEVEL: hit ground after wasOnPlatform');
             player.dead = true;
         }
@@ -97,6 +103,8 @@ let sketch = (level) => {
         if (player.y > cameraY + level.height || player.dead) {
             // Game over
             let gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
+            document.getElementById('resumeButton').style.display = 'none';
+            document.getElementById('playAgainButton').style.display = 'block';
             document.getElementById('gameOverModalLabel').textContent = 'Game Over';
             document.getElementById('playAgainButton').textContent = 'Restart';
             document.getElementById('ModalText').textContent = 'Your game is over. Play again?';
@@ -107,6 +115,9 @@ let sketch = (level) => {
         } else if (platforms[0].finish && player.finished) {
             // Level finished
             let gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
+            document.getElementById('resumeButton').style.display = 'none';
+            document.getElementById('playAgainButton').style.display = 'block';
+
             document.getElementById('gameOverModalLabel').textContent = 'Level Finished';
             document.getElementById('playAgainButton').textContent = 'Next Level';
             document.getElementById('ModalText').textContent = 'Congrats you Won!';
@@ -117,10 +128,19 @@ let sketch = (level) => {
     };
 
     level.handlePlatforms = () => {
-        for (let platform of platforms) {
+        let destroy = false;
+        let platformIndex = -1;
+        for (let i = 0; i < platforms.length; i++) {
+            const platform = platforms[i];
             platform.draw(level);
-            let destroy = platform.checkCollision(player, level);
-            if (destroy === true) platforms.pop();
+            destroy = platform.checkCollision(player, level);
+            if (destroy === true) {
+                platformIndex = i;
+                break;
+            }
+        }
+        if (platformIndex !== -1) {
+            platforms.splice(platformIndex, 1);
         }
     };
 
@@ -128,25 +148,33 @@ let sketch = (level) => {
         switch (area) {
             case 'hell':
                 platformImage = level.loadImage('../images/platforms/hell_platform.png');
+                bgImage = level.loadImage('../images/backgrounds/svgs/hell1.svg');
                 themeColor = level.color(87, 38, 39);
                 break;
             case 'dirt':
                 platformImage = level.loadImage('../images/platforms/ground_platform.png');
+                bgImage = level.loadImage('../images/backgrounds/svgs/ground2.svg');
+
                 themeColor = level.color(101, 69, 50);
 
                 break;
             case 'rock':
                 platformImage = level.loadImage('../images/platforms/mountain_platform.png');
+                bgImage = level.loadImage('../images/backgrounds/svgs/mountains1.svg');
+
                 themeColor = level.color(75, 79, 116);
 
                 break;
             case 'sky':
                 platformImage = level.loadImage('../images/platforms/sky_platform.png');
+                bgImage = level.loadImage('../images/backgrounds/svgs/sky2.svg');
+
                 themeColor = level.color(10, 169, 216);
 
                 break;
             case 'space':
                 platformImage = level.loadImage('../images/platforms/space_platform.png');
+                bgImage = level.loadImage('../images/backgrounds/svgs/space1.svg');
                 themeColor = level.color(32, 33, 43);
 
             default:
@@ -166,6 +194,9 @@ let sketch = (level) => {
                 platformData.stable,
                 platformImage
             );
+            if (platform.finish === true) {
+                platform.img = level.loadImage('../images/platforms/finish_platform.png');
+            }
             plats.push(platform);
         }
         return plats;
@@ -184,6 +215,13 @@ document.getElementById('playAgainButton').addEventListener('click', function ()
     gameOverModal.hide();
 });
 
+document.getElementById('resumeButton').addEventListener('click', function () {
+    let gameOverModalElement = document.getElementById('gameOverModal');
+    let gameOverModal = bootstrap.Modal.getInstance(gameOverModalElement);
+    currentLevel.loop();
+    gameOverModal.hide();
+});
+
 document.getElementById('mainMenuButton').addEventListener('click', function () {
     let gameOverModalElement = document.getElementById('gameOverModal');
     let gameOverModal = bootstrap.Modal.getInstance(gameOverModalElement);
@@ -195,3 +233,13 @@ document.getElementById('mainMenuButton').addEventListener('click', function () 
 
 let currentLevel = new p5(sketch);
 console.log('LEVEL ID: [ ' + levelID + ' ]');
+
+document.getElementById('pauseButton').addEventListener('click', function () {
+    let gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
+    document.getElementById('gameOverModalLabel').textContent = 'Game Paused';
+    document.getElementById('resumeButton').style.display = 'block';
+    document.getElementById('playAgainButton').style.display = 'none';
+    document.getElementById('ModalText').textContent = 'Game is paused choose an option!';
+    gameOverModal.show();
+    currentLevel.noLoop();
+});
