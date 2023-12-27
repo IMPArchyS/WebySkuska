@@ -15,6 +15,10 @@
     padding: 0;
 }
 
+.full-height {
+    height: 100vh;
+}
+
 #p5_loading {
     position: absolute;
     top: 50%;
@@ -24,14 +28,16 @@
     color: red;
 }
 
-.no-underline {
-    text-decoration: none !important;
-}
 
 .btn-custom {
     background-color: #313B72 !important;
     border-color: #313B72 !important;
     color: #C3F3C0 !important;
+}
+
+.btn-custom:hover {
+    box-shadow: 0 0.3rem 0.8rem -0.1rem rgba(0, 0, 0, 1);
+    transform: translateY(-0.05rem);
 }
 
 .main-menu-header {

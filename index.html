@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sk">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -20,13 +20,11 @@
             alt="jumping_monkey" width="150" class="mt-4 mb-0">
         <img src="/images/platforms/ground_platform.png" alt="jumping_monkey" width="150" class="m-4 mt-0">
     </div>
-    <div class="container d-flex flex-column justify-content-start align-items-center" style="height: 100vh">
-        <button id="startGameButton" class="btn-custom btn btn-rounded m-3 fs-2" data-mdb-ripple-init>Start
-            Game</button>
-        <button id="continueGameButton" class="btn-custom btn btn-rounded m-3 fs-2"
-            data-mdb-ripple-init>Continue</button>
-        <a class="fs-2 no-underline" href="pages/levels.html">Select level</a>
-        <a class="fs-2 no-underline" href="pages/about.html">About</a>
+    <div class="container d-flex flex-column justify-content-start align-items-center mb-2 full-height" >
+        <button id="startGameButton" class="btn-custom btn btn-rounded m-2 fs-2  w-50" data-mdb-ripple-init>Play</button>
+        <button id="continueGameButton" class="btn-custom btn btn-rounded m-2 fs-2  w-50" data-mdb-ripple-init>Continue</button>
+        <button onclick="window.location.href='pages/levels.html';" class="btn-custom btn btn-rounded m-2 fs-2  w-50" data-mdb-ripple-init>Levels</button>
+        <button onclick="window.location.href='pages/tutorial.html';" class="btn-custom btn btn-rounded m-2 fs-2  w-50" data-mdb-ripple-init>Tutorial</button></a>
     </div>
 
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
