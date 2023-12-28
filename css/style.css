@@ -1,7 +1,7 @@
 .menuBody {
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow: auto;
     /* Prevent scrollbars */
     background-image: url('../images/backgrounds/svgs/main_menu.svg');
     background-size: cover;
