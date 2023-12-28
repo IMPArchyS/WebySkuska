@@ -1,10 +1,12 @@
 import Platform from './Platform.js';
 
 let levels = []; // Array to store all levels
-
+let levelAmount = 0; // Amount of levels in the game
 let sketch = (level) => {
     level.preload = () => {
         level.loadJSON('../levels.json', (data) => {
+            levelAmount = data.levels.length;
+            localStorage.setItem('levelAmount', levelAmount);
             for (let levelData of data.levels) {
                 levels.push({ id: levelData.id });
             }
@@ -20,9 +22,13 @@ let sketch = (level) => {
         console.log(localStorage);
         for (let level of levels) {
             // create elements for each level
-            let levelElement = getButtonByTextContent(`Level ${level.id}`);
+            var levelElement = document.createElement('button');
+            levelElement.classList.add('btn' , 'btn-custom', 'btn-rounded', 'm-1', 'fs-4', 'w-50');
             levelElement.textContent = `Level ${level.id}`;
-
+            levelElement.disabled = true; // by default, level is not clickable
+            if (levelElement.textContent === 'Level 1') {
+                levelElement.disabled = false;
+            }
             // if the level was played, level label is clickable & sends player to the level
             if (localStorage.getItem(`level${level.id}Available`) === 'true') {
                 levelElement.disabled = false;
@@ -31,16 +37,8 @@ let sketch = (level) => {
                     window.location.href = 'game.html';
                 });
             }
+            document.getElementById('levels-container').appendChild(levelElement);
         }
-    }
-    function getButtonByTextContent(text) {
-        let buttons = document.getElementsByTagName('button');
-        for (let button of buttons) {
-            if (button.textContent === text) {
-                return button;
-            }
-        }
-        return null;
     }
 };
 
@@ -59,19 +57,21 @@ function resetLevels() {
 
     // Reset the selected level id to 1
     localStorage.setItem('selectedLevelId', '1');
-    localStorage.setItem('levelAmount', '0');
+    localStorage.setItem('levelAmount', '1');
+    localStorage.setItem(`level1Available`, 'true');
 
     console.log('DEBUG: LOCAL STORAGE:');
     console.log(localStorage);
 
     // reset links
     let levelElements = document.querySelectorAll('button');
-    let filteredElements = Array.from(levelElements).filter((element) => element.textContent.startsWith('Level'));
+    let filteredElements = Array.from(levelElements).filter(element => element.textContent.startsWith('Level'));
     filteredElements.forEach((element) => {
         if (element.textContent === 'Level 1') {
-        } else {
+            element.disabled = false;
+        }
+        else {
             element.disabled = true;
-            console.log('disabled button');
         }
     });
 }

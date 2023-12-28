@@ -70,6 +70,14 @@
     font-weight: bold !important;
     border: #313b72 solid 0.4rem !important;
 }
+
+@media print {
+    p.bodyText {
+        font-family: monospace, times, serif;
+        font-size: 10pt;
+        color: black;
+    }
+}
 /* pallete:  
     462255
     313B72 
