@@ -23,12 +23,10 @@ let sketch = (level) => {
         for (let level of levels) {
             // create elements for each level
             var levelElement = document.createElement('button');
-            levelElement.classList.add('btn' , 'btn-custom', 'btn-rounded', 'm-1', 'fs-4', 'w-50');
+            levelElement.classList.add('btn', 'btn-custom', 'btn-rounded', 'm-1', 'fs-4', 'w-50');
             levelElement.textContent = `Level ${level.id}`;
             levelElement.disabled = true; // by default, level is not clickable
-            if (levelElement.textContent === 'Level 1') {
-                levelElement.disabled = false;
-            }
+
             // if the level was played, level label is clickable & sends player to the level
             if (localStorage.getItem(`level${level.id}Available`) === 'true') {
                 levelElement.disabled = false;
@@ -44,10 +42,6 @@ let sketch = (level) => {
 
 new p5(sketch);
 
-/// DEBUG ONLY
-/// TODO: Keep or remove this
-///
-
 document.getElementById('resetLevelsButton').addEventListener('click', resetLevels);
 
 function resetLevels() {
@@ -58,20 +52,14 @@ function resetLevels() {
     // Reset the selected level id to 1
     localStorage.setItem('selectedLevelId', '1');
     localStorage.setItem('levelAmount', '1');
-    localStorage.setItem(`level1Available`, 'true');
 
     console.log('DEBUG: LOCAL STORAGE:');
     console.log(localStorage);
 
     // reset links
     let levelElements = document.querySelectorAll('button');
-    let filteredElements = Array.from(levelElements).filter(element => element.textContent.startsWith('Level'));
+    let filteredElements = Array.from(levelElements).filter((element) => element.textContent.startsWith('Level'));
     filteredElements.forEach((element) => {
-        if (element.textContent === 'Level 1') {
-            element.disabled = false;
-        }
-        else {
-            element.disabled = true;
-        }
+        element.disabled = true;
     });
 }

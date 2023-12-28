@@ -34,11 +34,16 @@ let sketch = (level) => {
 
     level.setup = () => {
         let canvas = level.createCanvas(level.windowWidth, level.windowHeight);
-        localStorage.setItem(`level${levelID}Available`, 'true');
         localStorage.setItem('selectedLevelId', levelID);
         canvas.parent('canvas-container');
         level.windowResized();
-        player = new Player(level.width / 2 - 25, level.height, level.width * 0.082, level.height * 0.052, playerImage);
+        player = new Player(
+            level.width / 2 - 25,
+            level.height,
+            level.width * constants.PLAYER_WIDTH_RATIO,
+            level.height * constants.PLAYER_HEIGHT_RATIO,
+            playerImage
+        );
         platforms = currentLevel.platforms;
 
         if (window.DeviceOrientationEvent) {
@@ -78,7 +83,7 @@ let sketch = (level) => {
     level.windowResized = () => {
         let containerWidth = level.select('#canvas-container').width;
         level.resizeCanvas(containerWidth, level.windowHeight);
-        if (player) player.resize(level.width * 0.082, level.height * 0.052);
+        if (player) player.resize(level.width * constants.PLAYER_WIDTH_RATIO, level.height * constants.PLAYER_HEIGHT_RATIO);
         level.background(themeColor);
     };
 
@@ -123,6 +128,9 @@ let sketch = (level) => {
             document.getElementById('ModalText').textContent = 'Congrats you Won!';
             gameOverModal.show();
             levelID++;
+            localStorage.setItem(`level${levelID}Available`, 'true');
+            localStorage.setItem(`nextLevelId`, levelID);
+
             level.noLoop();
         }
     };
@@ -203,14 +211,42 @@ let sketch = (level) => {
     };
 };
 
-document.getElementById('playAgainButton').addEventListener('click', function () {
-    let gameOverModalElement = document.getElementById('gameOverModal');
-    let gameOverModal = bootstrap.Modal.getInstance(gameOverModalElement);
+function restartGame() {
+    levelID = parseInt(localStorage.getItem('selectedLevelId'));
     if (levelID > levelAmount) {
         window.location.href = '../index.html';
     } else {
         currentLevel.remove();
         currentLevel = new p5(sketch);
+    }
+}
+
+document.addEventListener('keydown', function (event) {
+    let gameOverModalElement = document.getElementById('gameOverModal');
+    let gameOverModal = bootstrap.Modal.getInstance(gameOverModalElement);
+    let modalOpen;
+    if (gameOverModal === null) {
+        modalOpen = false;
+    } else {
+        modalOpen = gameOverModal._isShown;
+    }
+    if ((event.key === 'r' || event.key === 'R') && !modalOpen) {
+        restartGame();
+    }
+});
+
+document.getElementById('playAgainButton').addEventListener('click', function () {
+    let gameOverModalElement = document.getElementById('gameOverModal');
+    let gameOverModal = bootstrap.Modal.getInstance(gameOverModalElement);
+    if (document.getElementById('playAgainButton').textContent === 'Restart') {
+        restartGame();
+    } else {
+        if (levelID > levelAmount) {
+            window.location.href = '../index.html';
+        } else {
+            currentLevel.remove();
+            currentLevel = new p5(sketch);
+        }
     }
     gameOverModal.hide();
 });

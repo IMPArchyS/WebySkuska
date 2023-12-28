@@ -1,7 +1,7 @@
 window.addEventListener('load', function () {
-    var paragraph1 = document.getElementById('computer_tutorial');
-    var paragraph2 = document.getElementById('phone_tutorial');
-    var gyroPresent = false;
+    let paragraph1 = document.getElementById('computer_tutorial');
+    let paragraph2 = document.getElementById('phone_tutorial');
+    let gyroPresent = false;
 
     if (
         navigator.userAgent.match(/Android/i) ||

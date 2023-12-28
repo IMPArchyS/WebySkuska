@@ -39,7 +39,8 @@ export default class Player {
     input(level, gamma) {
         if (this.dead || this.finished) return;
 
-        let moveSpeed = level.width * 0.01; // 1% of screen width per frame
+        let gammaScale = 0.1;
+        let moveSpeed = level.width * 0.01 + gamma * gammaScale; // 1% of screen width per frame
 
         // LEFT
         if (level.keyIsDown(constants.KEY_A) || level.keyIsDown(constants.LEFT_ARROW) || gamma < 0) {
