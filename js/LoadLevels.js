@@ -66,14 +66,12 @@ function resetLevels() {
 
     // reset links
     let levelElements = document.querySelectorAll('button');
-    let filteredElements = Array.from(levelElements).filter(element => element.textContent.startsWith('Level'));
+    let filteredElements = Array.from(levelElements).filter((element) => element.textContent.startsWith('Level'));
     filteredElements.forEach((element) => {
         if (element.textContent === 'Level 1') {
-
-        }
-        else {
+        } else {
             element.disabled = true;
-            console.log("disabled button");
+            console.log('disabled button');
         }
     });
 }

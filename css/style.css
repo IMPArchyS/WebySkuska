@@ -14,14 +14,14 @@
     margin: 0;
     padding: 0;
     font-family: monospace;
-    background: rgb(34,195,125);
-    background: linear-gradient(90deg, rgba(34,195,125,1) 0%, rgba(253,187,45,1) 100%);
+    background: rgb(34, 195, 125);
+    background: linear-gradient(90deg, rgba(34, 195, 125, 1) 0%, rgba(253, 187, 45, 1) 100%);
     overflow: hidden;
 }
 
 .no-border {
-    border: none!important;
-    box-shadow: none!important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .full-height {
@@ -34,17 +34,17 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 2em;
-    color: #313B72;
+    color: #313b72;
 }
 
-.gameBody  {
-    background-color: #C3F3C0 !important;
+.gameBody {
+    background-color: #c3f3c0 !important;
 }
 
 .btn-custom {
-    background-color: #313B72 !important;
-    border-color: #313B72 !important;
-    color: #C3F3C0 !important;
+    background-color: #313b72 !important;
+    border-color: #313b72 !important;
+    color: #c3f3c0 !important;
 }
 
 .btn-custom:hover {
@@ -54,21 +54,21 @@
 
 .main-menu-header {
     font-size: 2em;
-    color: #C3F3C0;
+    color: #c3f3c0;
     background-color: #313b72;
 }
 
 .gradient {
     background: rgb(49, 59, 114);
-        background: linear-gradient(180deg, rgba(49, 59, 114, 1) 0%, rgba(49, 59, 114, 0) 100%);
-        height: .4rem;
+    background: linear-gradient(180deg, rgba(49, 59, 114, 1) 0%, rgba(49, 59, 114, 0) 100%);
+    height: 0.4rem;
 }
 
 .modal-content {
-    background-color: #7EE081!important;
-    color: #313b72!important;
-    font-weight: bold!important;
-    border: #313B72 solid .4rem!important;
+    background-color: #7ee081 !important;
+    color: #313b72 !important;
+    font-weight: bold !important;
+    border: #313b72 solid 0.4rem !important;
 }
 /* pallete:  
     462255
