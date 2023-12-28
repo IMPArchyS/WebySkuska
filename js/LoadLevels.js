@@ -65,9 +65,15 @@ function resetLevels() {
     console.log(localStorage);
 
     // reset links
-    let levelElements = document.querySelectorAll('.level, .completed');
-    levelElements.forEach((element) => {
-        let clonedElement = element.cloneNode(true);
-        element.parentNode.replaceChild(clonedElement, element);
+    let levelElements = document.querySelectorAll('button');
+    let filteredElements = Array.from(levelElements).filter(element => element.textContent.startsWith('Level'));
+    filteredElements.forEach((element) => {
+        if (element.textContent === 'Level 1') {
+
+        }
+        else {
+            element.disabled = true;
+            console.log("disabled button");
+        }
     });
 }
