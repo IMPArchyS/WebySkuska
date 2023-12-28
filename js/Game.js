@@ -33,7 +33,7 @@ let sketch = (level) => {
     };
 
     level.setup = () => {
-        let canvas = level.createCanvas(level.windowWidth, level.windowHeight - 6);
+        let canvas = level.createCanvas(level.windowWidth, level.windowHeight);
         localStorage.setItem(`level${levelID}Available`, 'true');
         localStorage.setItem('selectedLevelId', levelID);
         canvas.parent('canvas-container');
@@ -77,7 +77,7 @@ let sketch = (level) => {
 
     level.windowResized = () => {
         let containerWidth = level.select('#canvas-container').width;
-        level.resizeCanvas(containerWidth, level.windowHeight - 6);
+        level.resizeCanvas(containerWidth, level.windowHeight);
         if (player) player.resize(level.width * 0.082, level.height * 0.052);
         level.background(themeColor);
     };
