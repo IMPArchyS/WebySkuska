@@ -93,7 +93,7 @@ let sketch = (level) => {
 
     level.checkWinLoseCondition = () => {
         // on ground and touched the first platform
-        if (player.y + player.height >= level.height - player.height * 0.082 && player.wasOnPlatform === true) {
+        if (player.y + player.height >= level.height && player.wasOnPlatform === true) {
             console.log(player.y + player.height);
             console.log(level.height);
             console.log('LEVEL: hit ground after wasOnPlatform');

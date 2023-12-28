@@ -20,8 +20,8 @@ export default class Player {
 
         this.y += this.yVelocity * (level.height * 0.001);
 
-        if (this.y > level.height - 50) {
-            this.y = level.height - 50;
+        if (this.y > level.height - this.height) {
+            this.y = level.height - this.height;
             this.yVelocity = 0;
             this.onGround = true;
         }

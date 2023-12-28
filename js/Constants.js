@@ -11,5 +11,5 @@ export const PLAYER_WIDTH = 50;
 export const PLAYER_HEIGHT = 50;
 
 // platform variables
-export const MAX_WIDTH = 160;
-export const MIN_WIDTH = 110;
+export const MAX_WIDTH = 1600;
+export const MIN_WIDTH = 0;
