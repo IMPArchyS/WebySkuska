@@ -10,3 +10,11 @@ document.getElementById('startGameButton').addEventListener('click', function ()
 document.getElementById('continueGameButton').addEventListener('click', function () {
     window.location.href = 'pages/game.html';
 });
+
+document.getElementById('levelsButton').addEventListener('click', function () {
+    window.location.href = 'pages/levels.html';
+});
+
+document.getElementById('tutorialButton').addEventListener('click', function () {
+    window.location.href='pages/tutorial.html';
+});
