@@ -58,6 +58,11 @@
     background-color: #313b72;
 }
 
+.heading-custom {
+    color: #313b72;
+    font-weight: bold;
+}
+
 .gradient {
     background: rgb(49, 59, 114);
     background: linear-gradient(180deg, rgba(49, 59, 114, 1) 0%, rgba(49, 59, 114, 0) 100%);
