@@ -23,6 +23,7 @@ let sketch = (level) => {
                 localStorage.setItem('levelAmount', levelAmount);
             }
             let plats = [];
+            if (levelID > levelAmount) levelID = levelAmount;
             level.setLevelTheme(data.levels[levelID - 1].area);
             plats = level.initPlatforms(data);
 
@@ -216,8 +217,8 @@ function restartGame() {
     if (levelID > levelAmount) {
         window.location.href = '../index.html';
     } else {
-        currentLevel.remove();
-        currentLevel = new p5(sketch);
+        p5level.remove();
+        p5level = new p5(sketch);
     }
 }
 
@@ -244,8 +245,8 @@ document.getElementById('playAgainButton').addEventListener('click', function ()
         if (levelID > levelAmount) {
             window.location.href = '../index.html';
         } else {
-            currentLevel.remove();
-            currentLevel = new p5(sketch);
+            p5level.remove();
+            p5level = new p5(sketch);
         }
     }
     gameOverModal.hide();
@@ -254,7 +255,7 @@ document.getElementById('playAgainButton').addEventListener('click', function ()
 document.getElementById('resumeButton').addEventListener('click', function () {
     let gameOverModalElement = document.getElementById('gameOverModal');
     let gameOverModal = bootstrap.Modal.getInstance(gameOverModalElement);
-    currentLevel.loop();
+    p5level.loop();
     gameOverModal.hide();
 });
 
@@ -262,12 +263,12 @@ document.getElementById('mainMenuButton').addEventListener('click', function () 
     let gameOverModalElement = document.getElementById('gameOverModal');
     let gameOverModal = bootstrap.Modal.getInstance(gameOverModalElement);
     window.location.href = '../index.html';
-    currentLevel.remove();
-    currentLevel = new p5(sketch);
+    p5level.remove();
+    p5level = new p5(sketch);
     gameOverModal.hide();
 });
 
-let currentLevel = new p5(sketch);
+let p5level = new p5(sketch);
 console.log('LEVEL ID: [ ' + levelID + ' ]');
 
 document.getElementById('pauseButton').addEventListener('click', function () {
@@ -277,5 +278,5 @@ document.getElementById('pauseButton').addEventListener('click', function () {
     document.getElementById('playAgainButton').style.display = 'none';
     document.getElementById('ModalText').textContent = 'Game is paused choose an option!';
     gameOverModal.show();
-    currentLevel.noLoop();
+    p5level.noLoop();
 });
