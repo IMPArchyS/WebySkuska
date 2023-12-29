@@ -2,7 +2,6 @@ import Player from './Player.js';
 import Platform from './Platform.js';
 import * as constants from './Constants.js';
 
-let levelID = parseInt(localStorage.getItem('selectedLevelId'));
 let levelAmount = parseInt(localStorage.getItem('levelAmount'));
 
 let sketch = (level) => {
@@ -15,6 +14,7 @@ let sketch = (level) => {
     let platformImage;
     let themeColor = 200;
     let bgImage;
+    let levelID;
 
     level.preload = () => {
         level.loadJSON('../levels.json', (data) => {
@@ -22,20 +22,55 @@ let sketch = (level) => {
                 levelAmount = data.levels.length;
                 localStorage.setItem('levelAmount', levelAmount);
             }
+
+            // Randomize the order of levels
+            if (localStorage.getItem('levelOrder') === '0') {
+                let levelOrder = data.levels.slice();
+                levelOrder = shuffleLevels(levelOrder);
+                let levelIds = '';
+                for (let i = 0; i < levelOrder.length; i++) {
+                    levelIds += levelOrder[i].id;
+                    if (i < levelOrder.length - 1) {
+                        levelIds += ',';
+                    }
+                }
+                console.log('NEW LEVEL ORDER :');
+                console.log(levelIds);
+                localStorage.setItem('levelOrder', levelIds);
+            }
+
+            let levels = localStorage.getItem('levelOrder').split(',').map(Number);
+
+            let selectedLevelId = parseInt(localStorage.getItem('selectedLevelId'));
+            if (selectedLevelId > levelAmount) selectedLevelId = levelAmount;
+
+            levelID = levels[selectedLevelId - 1];
+
+            console.log('LEVEL ID: [ ' + levelID + ' ]');
             let plats = [];
-            if (levelID > levelAmount) levelID = levelAmount;
+            console.log(data.levels);
             level.setLevelTheme(data.levels[levelID - 1].area);
             plats = level.initPlatforms(data);
 
             currentLevel = { id: data.levels[levelID - 1].id, area: data.levels[levelID - 1].area, platforms: plats };
             playerImage = level.loadImage('../images/jumping_monkey.png');
+            console.log('CURRENT LEVEL :');
             console.log(currentLevel);
+            console.log('CURRENT LOCAL STORAGE :');
+            console.log(localStorage);
         });
+
+        function shuffleLevels(l) {
+            for (let i = l.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [l[i], l[j]] = [l[j], l[i]];
+            }
+            return l;
+        }
     };
 
     level.setup = () => {
         let canvas = level.createCanvas(level.windowWidth, level.windowHeight);
-        localStorage.setItem('selectedLevelId', levelID);
         canvas.parent('canvas-container');
         level.windowResized();
         player = new Player(
@@ -128,9 +163,14 @@ let sketch = (level) => {
             document.getElementById('playAgainButton').textContent = 'Next Level';
             document.getElementById('ModalText').textContent = 'Congrats you Won!';
             gameOverModal.show();
-            levelID++;
-            localStorage.setItem(`level${levelID}Available`, 'true');
-            localStorage.setItem(`nextLevelId`, levelID);
+            let levels = localStorage.getItem('levelOrder').split(',').map(Number);
+
+            let selectedLevelId = parseInt(localStorage.getItem('selectedLevelId'));
+            selectedLevelId++;
+            localStorage.setItem('selectedLevelId', selectedLevelId);
+            if (selectedLevelId > levelAmount) selectedLevelId = levelAmount;
+            levelID = levels[selectedLevelId - 1];
+            localStorage.setItem(`level${selectedLevelId}Available`, 'true');
 
             level.noLoop();
         }
@@ -213,7 +253,8 @@ let sketch = (level) => {
 };
 
 function restartGame() {
-    levelID = parseInt(localStorage.getItem('selectedLevelId'));
+    let levelID = parseInt(localStorage.getItem('selectedLevelId'));
+    console.log('RESTART LEVEL ID : ' + levelID);
     if (levelID > levelAmount) {
         window.location.href = '../index.html';
     } else {
@@ -239,6 +280,7 @@ document.addEventListener('keydown', function (event) {
 document.getElementById('playAgainButton').addEventListener('click', function () {
     let gameOverModalElement = document.getElementById('gameOverModal');
     let gameOverModal = bootstrap.Modal.getInstance(gameOverModalElement);
+    let levelID = parseInt(localStorage.getItem('selectedLevelId'));
     if (document.getElementById('playAgainButton').textContent === 'Restart') {
         restartGame();
     } else {
@@ -269,7 +311,6 @@ document.getElementById('mainMenuButton').addEventListener('click', function () 
 });
 
 let p5level = new p5(sketch);
-console.log('LEVEL ID: [ ' + levelID + ' ]');
 
 document.getElementById('pauseButton').addEventListener('click', function () {
     let gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));

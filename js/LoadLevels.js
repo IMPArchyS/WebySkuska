@@ -1,5 +1,3 @@
-import Platform from './Platform.js';
-
 let levels = []; // Array to store all levels
 let levelAmount = 0; // Amount of levels in the game
 let sketch = (level) => {
@@ -7,32 +5,28 @@ let sketch = (level) => {
         level.loadJSON('../levels.json', (data) => {
             levelAmount = data.levels.length;
             localStorage.setItem('levelAmount', levelAmount);
-            for (let levelData of data.levels) {
-                levels.push({ id: levelData.id });
-            }
-            console.log('LOADED LEVELS');
-            console.log(levels);
             displayLevels();
-            console.log('// INIT OVER //');
         });
     };
 
     function displayLevels() {
         console.log('STORED LEVELS:');
         console.log(localStorage);
-        for (let level of levels) {
+        for (let i = 1; i <= levelAmount; i++) {
             // create elements for each level
-            var levelElement = document.createElement('button');
+            let levelElement = document.createElement('button');
             levelElement.classList.add('btn', 'btn-custom', 'btn-rounded', 'm-1', 'fs-4', 'w-50');
-            levelElement.textContent = `Level ${level.id}`;
+            levelElement.textContent = `Level ${i}`;
             levelElement.disabled = true; // by default, level is not clickable
 
             // if the level was played, level label is clickable & sends player to the level
-            if (localStorage.getItem(`level${level.id}Available`) === 'true') {
+            if (localStorage.getItem(`level${i}Available`) === 'true') {
                 levelElement.disabled = false;
                 levelElement.addEventListener('click', function () {
-                    localStorage.setItem('selectedLevelId', level.id);
-                    window.location.href = 'game.html';
+                    if (localStorage.getItem('levelOrder') !== 0) {
+                        localStorage.setItem('selectedLevelId', i);
+                        window.location.href = 'game.html';
+                    }
                 });
             }
             document.getElementById('levels-container').appendChild(levelElement);
@@ -50,7 +44,6 @@ function resetLevels() {
     localStorage.clear();
 
     // Reset the selected level id to 1
-    localStorage.setItem('selectedLevelId', '1');
     localStorage.setItem('levelAmount', '1');
 
     console.log('DEBUG: LOCAL STORAGE:');
