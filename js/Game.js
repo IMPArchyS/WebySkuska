@@ -15,6 +15,10 @@ let sketch = (level) => {
     let themeColor = 200;
     let bgImage;
     let levelID;
+    let winSound;
+    let playerJumpSound;
+    let playerDeathSound;
+    let platformUnstableSound;
 
     level.preload = () => {
         level.loadJSON('../levels.json', (data) => {
@@ -54,6 +58,12 @@ let sketch = (level) => {
 
             currentLevel = { id: data.levels[levelID - 1].id, area: data.levels[levelID - 1].area, platforms: plats };
             playerImage = level.loadImage('../images/jumping_monkey.png');
+            level.soundFormats('mp3');
+            winSound = level.loadSound('../sound/end.mp3');
+            playerJumpSound = level.loadSound('../sound/jump.mp3');
+            playerDeathSound = level.loadSound('../sound/explosion.mp3');
+            platformUnstableSound = level.loadSound('../sound/platformUnstable.mp3');
+
             console.log('CURRENT LEVEL :');
             console.log(currentLevel);
             console.log('CURRENT LOCAL STORAGE :');
@@ -78,7 +88,8 @@ let sketch = (level) => {
             level.height,
             level.width * constants.PLAYER_WIDTH_RATIO,
             level.height * constants.PLAYER_HEIGHT_RATIO,
-            playerImage
+            playerImage,
+            playerJumpSound
         );
         platforms = currentLevel.platforms;
 
@@ -143,6 +154,7 @@ let sketch = (level) => {
 
         if (player.y > cameraY + level.height || player.dead) {
             // Game over
+            playerDeathSound.play();
             let gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
             document.getElementById('resumeButton').style.display = 'none';
             document.getElementById('playAgainButton').style.display = 'block';
@@ -155,6 +167,7 @@ let sketch = (level) => {
             level.noLoop();
         } else if (platforms[0].finish && player.finished) {
             // Level finished
+            winSound.play();
             let gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
             document.getElementById('resumeButton').style.display = 'none';
             document.getElementById('playAgainButton').style.display = 'block';
@@ -185,6 +198,7 @@ let sketch = (level) => {
             destroy = platform.checkCollision(player, level);
             if (destroy === true) {
                 platformIndex = i;
+                platformUnstableSound.play();
                 break;
             }
         }
