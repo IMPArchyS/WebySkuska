@@ -4,7 +4,7 @@
             "id": 1,
             "area": "hell",
             "platforms": [
-                { "x": 0.7, "y": 0, "width": 0.2, "height": 0.02, "finish": true },
+                { "x": 0.7, "y": 0, "width": 0.2, "height": 0.03, "finish": true },
                 { "x": 0.3, "y": 0.2, "width": 0.2, "height": 0.02 },
                 { "x": 0.7, "y": 0.4, "width": 0.2, "height": 0.02 },
                 { "x": 0.1, "y": 0.6, "width": 0.2, "height": 0.02 },
@@ -15,7 +15,7 @@
             "id": 2,
             "area": "dirt",
             "platforms": [
-                { "x": 0.3, "y": 0.2, "width": 0.2, "height": 0.02, "finish": true },
+                { "x": 0.3, "y": 0.2, "width": 0.2, "height": 0.03, "finish": true },
                 { "x": 0.7, "y": 0.4, "width": 0.2, "height": 0.02 },
                 { "x": 0.1, "y": 0.6, "width": 0.2, "height": 0.02 },
                 { "x": 0.4, "y": 0.8, "width": 0.2, "height": 0.02 }
@@ -25,7 +25,7 @@
             "id": 3,
             "area": "rock",
             "platforms": [
-                { "x": 0.3, "y": 0.4, "width": 0.2, "height": 0.02, "finish": true },
+                { "x": 0.3, "y": 0.4, "width": 0.2, "height": 0.03, "finish": true },
                 { "x": 0.5, "y": 0.6, "width": 0.2, "height": 0.02 },
                 { "x": 0.4, "y": 0.8, "width": 0.2, "height": 0.02 }
             ]
@@ -34,7 +34,7 @@
             "id": 4,
             "area": "sky",
             "platforms": [
-                { "x": 0.6, "y": 0.3, "width": 0.2, "height": 0.02, "finish": true },
+                { "x": 0.6, "y": 0.3, "width": 0.2, "height": 0.03, "finish": true },
                 { "x": 0.6, "y": 0.6, "width": 0.2, "height": 0.02 },
                 { "x": 0.2, "y": 0.5, "width": 0.2, "height": 0.02, "stable": false },
                 { "x": 0.3, "y": 0.8, "width": 0.2, "height": 0.02 }
@@ -44,7 +44,7 @@
             "id": 5,
             "area": "space",
             "platforms": [
-                { "x": 0.1, "y": 0.1, "width": 0.2, "height": 0.02, "finish": true },
+                { "x": 0.1, "y": 0.1, "width": 0.2, "height": 0.03, "finish": true },
                 { "x": 0.6, "y": 0.2, "width": 0.2, "height": 0.02, "stable": false },
                 { "x": 0.1, "y": 0.4, "width": 0.2, "height": 0.02, "stable": false },
                 { "x": 0.7, "y": 0.6, "width": 0.2, "height": 0.02, "stable": false },
