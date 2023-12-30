@@ -21,13 +21,16 @@ let sketch = (level) => {
         src: ['../sound/jump.mp3'],
     });
     let endSound = new Howl({
-        src: ['../sound/end.mp3'],
+        src: ['../sound/giggling.mp3'],
+    });
+    let congratsSound = new Howl({
+        src: ['../sound/congrats.mp3'],
     });
     let platformSound = new Howl({
-        src: ['../sound/platformUnstable.mp3'],
+        src: ['../sound/explosion.mp3'],
     });
     let playerDeathSound = new Howl({
-        src: ['../sound/explosion.mp3'],
+        src: ['../sound/death.mp3'],
     });
 
     level.preload = () => {
@@ -187,6 +190,7 @@ let sketch = (level) => {
                 document.getElementById('gameOverModalLabel').textContent = 'Congrats you completed the game!';
                 document.getElementById('playAgainButton').textContent = 'Go to Main Menu';
                 document.getElementById('ModalText').textContent = 'Dumbo is proud of you!';
+                congratsSound.play();
                 gameOverModal.show();
             } else {
                 document.getElementById('resumeButton').style.display = 'none';
