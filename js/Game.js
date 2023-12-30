@@ -81,7 +81,7 @@ let sketch = (level) => {
             level.height * constants.PLAYER_HEIGHT_RATIO,
             playerImage
         );
-
+        platforms = currentLevel.platforms;
         if (window.DeviceOrientationEvent) {
             window.addEventListener('deviceorientation', function (event) {
                 gamma = event.gamma; // rotation around y-axis
@@ -94,10 +94,6 @@ let sketch = (level) => {
     };
 
     level.draw = () => {
-        if (!currentLevel) return;
-        if (!player) return;
-        platforms = currentLevel.platforms;
-
         level.translate(0, -cameraY);
         level.background(themeColor);
         // Calculate the number of times the background image needs to be drawn
