@@ -156,13 +156,6 @@ let sketch = (level) => {
         } else if (platforms[0].finish && player.finished) {
             // Level finished
             let gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
-            document.getElementById('resumeButton').style.display = 'none';
-            document.getElementById('playAgainButton').style.display = 'block';
-
-            document.getElementById('gameOverModalLabel').textContent = 'Level Finished';
-            document.getElementById('playAgainButton').textContent = 'Next Level';
-            document.getElementById('ModalText').textContent = 'Congrats you Won!';
-            gameOverModal.show();
             let levels = localStorage.getItem('levelOrder').split(',').map(Number);
 
             let selectedLevelId = parseInt(localStorage.getItem('selectedLevelId'));
@@ -171,7 +164,23 @@ let sketch = (level) => {
             if (selectedLevelId > levelAmount) selectedLevelId = levelAmount;
             levelID = levels[selectedLevelId - 1];
             localStorage.setItem(`level${selectedLevelId}Available`, 'true');
+            if (selectedLevelId >= levelAmount) {
+                document.getElementById('resumeButton').style.display = 'none';
+                document.getElementById('playAgainButton').style.display = 'block';
+                document.getElementById('gameOverModalLabel').textContent = 'Congrats you completed the game!';
+                document.getElementById('playAgainButton').textContent = 'Go to Main Menu';
+                document.getElementById('ModalText').textContent = 'Dumbo is proud of you!';
+                gameOverModal.show();
+            }
+            else{
+                document.getElementById('resumeButton').style.display = 'none';
+                document.getElementById('playAgainButton').style.display = 'block';
 
+                document.getElementById('gameOverModalLabel').textContent = 'Level Finished';
+                document.getElementById('playAgainButton').textContent = 'Next Level';
+                document.getElementById('ModalText').textContent = 'Congrats you Won!';
+                gameOverModal.show();
+            }
             level.noLoop();
         }
     };
@@ -283,7 +292,10 @@ document.getElementById('playAgainButton').addEventListener('click', function ()
     let levelID = parseInt(localStorage.getItem('selectedLevelId'));
     if (document.getElementById('playAgainButton').textContent === 'Restart') {
         restartGame();
-    } else {
+    } else if (document.getElementById('playAgainButton').textContent === 'Go to Main Menu') { 
+        window.location.href = '../index.html';
+    }
+    else {
         if (levelID > levelAmount) {
             window.location.href = '../index.html';
         } else {
