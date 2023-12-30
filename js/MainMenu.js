@@ -24,3 +24,8 @@ document.getElementById('levelsButton').addEventListener('click', function () {
 document.getElementById('tutorialButton').addEventListener('click', function () {
     window.location.href = 'pages/tutorial.html';
 });
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+        .then(function () { console.log('Service Worker Registered'); });
+}
