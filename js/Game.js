@@ -3,6 +3,7 @@ import Platform from './Platform.js';
 import * as constants from './Constants.js';
 
 let levelAmount = parseInt(localStorage.getItem('levelAmount'));
+let pauseButton = document.getElementById('pauseButton');
 Howler.volume(0.0); // Set to 70%
 
 let sketch = (level) => {
@@ -23,7 +24,7 @@ let sketch = (level) => {
     });
     let endSound = new Howl({
         src: ['../sound/giggling.mp3'],
-        volume: 0.3,    
+        volume: 0.3,
     });
     let congratsSound = new Howl({
         src: ['../sound/congrats.mp3'],
@@ -86,12 +87,18 @@ let sketch = (level) => {
     level.setup = () => {
         let canvas = level.createCanvas(level.windowWidth, level.windowHeight);
         canvas.parent('canvas-container');
-        level.windowResized();
+        level.windowResized();  
+        let playerBaseWidth = 10; // This is the base width for the player
+        let playerScaleFactor = Math.log(level.windowWidth) / Math.log(3); // This scales the player based on the window width
+        let playerWidth = playerBaseWidth * playerScaleFactor;
+        let playerHeight = playerWidth * (30 / 25);
+        console.log(playerHeight);
+        console.log(playerWidth);   
         player = new Player(
             level.width / 2 - 25,
             level.height,
-            level.width * constants.PLAYER_WIDTH_RATIO,
-            level.height * constants.PLAYER_HEIGHT_RATIO,
+            playerWidth,
+            playerHeight,
             playerImage,
             jumpSound
         );
@@ -102,7 +109,8 @@ let sketch = (level) => {
             });
         } else {
             //console.log('DeviceOrientationEvent not supported');
-        }
+        } 
+        pauseButton.classList.remove('hidden-button');
     };
 
     level.draw = () => {
@@ -125,7 +133,6 @@ let sketch = (level) => {
         level.checkWinLoseCondition();
 
         if (gamma === null) gamma = 0;
-        //document.getElementById('gammaDebug').textContent = 'gamma: ' + gamma.toFixed(3);
     };
 
     level.windowResized = () => {
@@ -175,18 +182,15 @@ let sketch = (level) => {
             if (selectedLevelId > levelAmount) selectedLevelId = levelAmount;
             levelID = levels[selectedLevelId - 1];
             localStorage.setItem(`level${selectedLevelId}Available`, 'true');
+            document.getElementById('resumeButton').style.display = 'none';
+            document.getElementById('playAgainButton').style.display = 'block';
             if (selectedLevelId >= levelAmount) {
-                document.getElementById('resumeButton').style.display = 'none';
-                document.getElementById('playAgainButton').style.display = 'block';
                 document.getElementById('gameOverModalLabel').textContent = 'Congrats you completed the game!';
                 document.getElementById('playAgainButton').textContent = 'Go to Main Menu';
                 document.getElementById('ModalText').textContent = 'Dumbo is proud of you!';
                 congratsSound.play();
                 gameOverModal.show();
             } else {
-                document.getElementById('resumeButton').style.display = 'none';
-                document.getElementById('playAgainButton').style.display = 'block';
-
                 document.getElementById('gameOverModalLabel').textContent = 'Level Finished';
                 document.getElementById('playAgainButton').textContent = 'Next Level';
                 document.getElementById('ModalText').textContent = 'Congrats you Won!';
@@ -224,29 +228,22 @@ let sketch = (level) => {
             case 'dirt':
                 platformImage = level.loadImage('../images/platforms/ground_platform.png');
                 bgImage = level.loadImage('../images/backgrounds/svgs/ground2.svg');
-
                 themeColor = level.color(101, 69, 50);
-
                 break;
             case 'rock':
                 platformImage = level.loadImage('../images/platforms/mountain_platform.png');
                 bgImage = level.loadImage('../images/backgrounds/svgs/mountains1.svg');
-
                 themeColor = level.color(75, 79, 116);
-
                 break;
             case 'sky':
                 platformImage = level.loadImage('../images/platforms/sky_platform.png');
                 bgImage = level.loadImage('../images/backgrounds/svgs/sky2.svg');
-
                 themeColor = level.color(10, 169, 216);
-
                 break;
             case 'space':
                 platformImage = level.loadImage('../images/platforms/space_platform.png');
                 bgImage = level.loadImage('../images/backgrounds/svgs/space1.svg');
                 themeColor = level.color(32, 33, 43);
-
             default:
                 break;
         }
@@ -278,8 +275,9 @@ function restartGame() {
     if (levelID > levelAmount) {
         window.location.href = '../index.html';
     } else {
-        p5level.remove();
-        p5level = new p5(sketch);
+        // p5level.remove();
+        // p5level = new p5(sketch);
+        window.location.reload();
     }
 }
 

@@ -18,7 +18,6 @@ export default class Player {
         if (this.dead || this.finished) return;
 
         this.yVelocity += constants.gravity;
-
         this.y += this.yVelocity * (level.height * 0.001);
 
         if (this.y > level.height - this.height) {

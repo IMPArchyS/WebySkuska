@@ -6,7 +6,7 @@
     background-image: url('../images/backgrounds/svgs/main_menu.svg');
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: 50 50;
+    background-position: center;
     font-family: monospace;
 }
 
@@ -14,6 +14,9 @@
     color: yellow;
 }
 
+.hidden-button{
+    visibility: hidden;
+}
 .gameBody {
     margin: 0;
     padding: 0;

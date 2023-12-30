@@ -7,7 +7,7 @@ export const RIGHT_ARROW = 39;
 // player variables
 export const gravity = 0.5;
 export const jumpForce = -15;
-export const PLAYER_WIDTH_RATIO = 0.072;
+export const PLAYER_WIDTH_RATIO = 0.06;
 export const PLAYER_HEIGHT_RATIO = 0.082;
 
 // platform variables
