@@ -91,7 +91,6 @@ let sketch = (level) => {
             playerImage,
             playerJumpSound
         );
-        platforms = currentLevel.platforms;
 
         if (window.DeviceOrientationEvent) {
             window.addEventListener('deviceorientation', function (event) {
@@ -105,6 +104,10 @@ let sketch = (level) => {
     };
 
     level.draw = () => {
+        if (!currentLevel) return;
+        if (!player) return;
+        platforms = currentLevel.platforms;
+
         level.translate(0, -cameraY);
         level.background(themeColor);
         // Calculate the number of times the background image needs to be drawn
