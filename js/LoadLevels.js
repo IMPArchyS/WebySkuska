@@ -10,8 +10,6 @@ let sketch = (level) => {
     };
 
     function displayLevels() {
-        console.log('STORED LEVELS:');
-        console.log(localStorage);
         for (let i = 1; i <= levelAmount; i++) {
             // create elements for each level
             let levelElement = document.createElement('button');
@@ -39,15 +37,11 @@ new p5(sketch);
 document.getElementById('resetLevelsButton').addEventListener('click', resetLevels);
 
 function resetLevels() {
-    console.log('DEBUG: RESETTING PROGRESS');
     // Clear the completion status of each level
     localStorage.clear();
 
     // Reset the selected level id to 1
     localStorage.setItem('levelAmount', '1');
-
-    console.log('DEBUG: LOCAL STORAGE:');
-    console.log(localStorage);
 
     // reset links
     let levelElements = document.querySelectorAll('button');

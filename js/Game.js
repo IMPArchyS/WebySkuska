@@ -19,18 +19,23 @@ let sketch = (level) => {
 
     let jumpSound = new Howl({
         src: ['../sound/jump.mp3'],
+        volume: 0.3,
     });
     let endSound = new Howl({
         src: ['../sound/giggling.mp3'],
+        volume: 0.3,    
     });
     let congratsSound = new Howl({
         src: ['../sound/congrats.mp3'],
+        volume: 0.3,
     });
     let platformSound = new Howl({
         src: ['../sound/explosion.mp3'],
+        volume: 0.3,
     });
     let playerDeathSound = new Howl({
         src: ['../sound/death.mp3'],
+        volume: 0.3,
     });
 
     level.preload = () => {
@@ -51,8 +56,6 @@ let sketch = (level) => {
                         levelIds += ',';
                     }
                 }
-                console.log('NEW LEVEL ORDER :');
-                console.log(levelIds);
                 localStorage.setItem('levelOrder', levelIds);
             }
 
@@ -63,19 +66,12 @@ let sketch = (level) => {
 
             levelID = levels[selectedLevelId - 1];
 
-            console.log('LEVEL ID: [ ' + levelID + ' ]');
             let plats = [];
-            console.log(data.levels);
             level.setLevelTheme(data.levels[levelID - 1].area);
             plats = level.initPlatforms(data);
 
             currentLevel = { id: data.levels[levelID - 1].id, area: data.levels[levelID - 1].area, platforms: plats };
             playerImage = level.loadImage('../images/jumping_monkey.png');
-
-            console.log('CURRENT LEVEL :');
-            console.log(currentLevel);
-            console.log('CURRENT LOCAL STORAGE :');
-            console.log(localStorage);
         });
 
         function shuffleLevels(l) {
@@ -105,10 +101,8 @@ let sketch = (level) => {
                 gamma = event.gamma; // rotation around y-axis
             });
         } else {
-            console.log('DeviceOrientationEvent is not supported');
+            //console.log('DeviceOrientationEvent not supported');
         }
-
-        console.log('// INIT OVER //');
     };
 
     level.draw = () => {
@@ -153,9 +147,6 @@ let sketch = (level) => {
     level.checkWinLoseCondition = () => {
         // on ground and touched the first platform
         if (player.y + player.height >= level.height && player.wasOnPlatform === true) {
-            console.log(player.y + player.height);
-            console.log(level.height);
-            console.log('LEVEL: hit ground after wasOnPlatform');
             player.dead = true;
         }
 
@@ -284,7 +275,6 @@ let sketch = (level) => {
 
 function restartGame() {
     let levelID = parseInt(localStorage.getItem('selectedLevelId'));
-    console.log('RESTART LEVEL ID : ' + levelID);
     if (levelID > levelAmount) {
         window.location.href = '../index.html';
     } else {

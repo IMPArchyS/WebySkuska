@@ -51,13 +51,11 @@ export default class Platform {
             player.wasOnPlatform = true;
 
             if (this.finish) {
-                console.log('PLATFORM COLLISION: Level finished!');
                 player.finished = true;
                 level.currentLevel++;
                 level.highestLevel = Math.max(level.highestLevel, level.currentLevel);
             }
             if (this.stable === false) {
-                console.log('PLATFORM COLLISION: UNSTABLE PLATFORM');
                 return true;
             }
             return false;

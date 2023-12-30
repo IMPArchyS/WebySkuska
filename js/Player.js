@@ -60,7 +60,6 @@ export default class Player {
         }
         // JUMP CHECK
         if (this.onGround) {
-            console.log('PLAYER: ONGROUND');
             this.jumpSound.play();
             this.yVelocity = constants.jumpForce;
             this.onGround = false;

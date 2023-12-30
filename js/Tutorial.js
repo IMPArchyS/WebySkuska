@@ -19,10 +19,8 @@ window.addEventListener('load', function () {
     if (!gyroPresent) {
         paragraph1.style.display = 'block';
         paragraph2.style.display = 'none';
-        console.log('DeviceOrientation is not supported');
     } else {
         paragraph1.style.display = 'none';
         paragraph2.style.display = 'block';
-        console.log('DeviceOrientation is supported');
     }
 });
