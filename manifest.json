@@ -1,0 +1,28 @@
+{
+"name": "Jumping Ape",
+"short_name": "Jumping Ape",
+"start_url": "https://webte1.fei.stuba.sk/~xhubacek/WebySkuska/",
+"display": "standalone",
+"description": "Jumping Ape is a game where you have to jump on platforms get to bananas.",
+"lang": "EN",
+"dir": "auto",
+"theme_color": "#212121",
+"background_color": "#212121",
+"orientation": "portrait",
+"icons": [
+    {
+        "src": "https://webte1.fei.stuba.sk/~xhubacek/WebySkuska/images/jumping_monkey.png",
+        "sizes": "300x300",
+        "type": "image/png",
+        "purpose": "any"
+    }
+],
+"screenshots": [
+    {
+        "src": "https://webte1.fei.stuba.sk/~xhubacek/WebySkuska/images/menu_screen.png",
+        "sizes": "1215x857",
+        "type": "image/png",
+        "description": "A screenshot of the home page"
+    }
+]
+}
