@@ -179,23 +179,22 @@ let sketch = (level) => {
             let selectedLevelId = parseInt(localStorage.getItem('selectedLevelId'));
             selectedLevelId++;
             localStorage.setItem('selectedLevelId', selectedLevelId);
+            if (selectedLevelId > levelAmount) {
+                document.getElementById('gameOverModalLabel').textContent = 'Congrats you completed the game!';
+                document.getElementById('playAgainButton').textContent = 'Go to Main Menu';
+                document.getElementById('ModalText').textContent = 'Dumbo is proud of you!';
+                congratsSound.play();
+            } else {
+                document.getElementById('gameOverModalLabel').textContent = 'Level Finished';
+                document.getElementById('playAgainButton').textContent = 'Next Level';
+                document.getElementById('ModalText').textContent = 'Congrats you Won!';
+            }
             if (selectedLevelId > levelAmount) selectedLevelId = levelAmount;
             levelID = levels[selectedLevelId - 1];
             localStorage.setItem(`level${selectedLevelId}Available`, 'true');
             document.getElementById('resumeButton').style.display = 'none';
             document.getElementById('playAgainButton').style.display = 'block';
-            if (selectedLevelId >= levelAmount) {
-                document.getElementById('gameOverModalLabel').textContent = 'Congrats you completed the game!';
-                document.getElementById('playAgainButton').textContent = 'Go to Main Menu';
-                document.getElementById('ModalText').textContent = 'Dumbo is proud of you!';
-                congratsSound.play();
-                gameOverModal.show();
-            } else {
-                document.getElementById('gameOverModalLabel').textContent = 'Level Finished';
-                document.getElementById('playAgainButton').textContent = 'Next Level';
-                document.getElementById('ModalText').textContent = 'Congrats you Won!';
-                gameOverModal.show();
-            }
+            gameOverModal.show();
             level.noLoop();
         }
     };
