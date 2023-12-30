@@ -102,7 +102,7 @@ let sketch = (level) => {
         // Draw the background images
         for (let i = 0; i < numImages; i++) {
             // Adjust the y-coordinate of the image based on the camera position
-            let y = i * bgImage.height + (cameraY % bgImage.height);
+            let y = i * bgImage.height - Math.abs(cameraY);
             level.tint(255, 127); // Set the tint color to white with 50% opacity
             level.image(bgImage, 0, y);
             level.noTint();
