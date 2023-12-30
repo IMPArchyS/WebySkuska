@@ -1,7 +1,7 @@
 import * as constants from './Constants.js';
 
 export default class Player {
-    constructor(x, y, width, height, img, jumpSound) {
+    constructor(x, y, width, height, img) {
         this.img = img;
         this.x = x;
         this.y = y;
@@ -11,7 +11,6 @@ export default class Player {
         this.onGround = true;
         this.finished = false;
         this.dead = false;
-        this.jumpSound = jumpSound;
     }
 
     jump(level) {
@@ -60,7 +59,6 @@ export default class Player {
         // JUMP CHECK
         if (this.onGround) {
             console.log('PLAYER: ONGROUND');
-            this.jumpSound.play();
             this.yVelocity = constants.jumpForce;
             this.onGround = false;
         }
