@@ -3,6 +3,7 @@ import Platform from './Platform.js';
 import * as constants from './Constants.js';
 
 let levelAmount = parseInt(localStorage.getItem('levelAmount'));
+Howler.volume(0.0); // Set to 70%
 
 let sketch = (level) => {
     let player;
@@ -15,6 +16,19 @@ let sketch = (level) => {
     let themeColor = 200;
     let bgImage;
     let levelID;
+
+    let jumpSound = new Howl({
+        src: ['../sound/jump.mp3'],
+    });
+    let endSound = new Howl({
+        src: ['../sound/end.mp3'],
+    });
+    let platformSound = new Howl({
+        src: ['../sound/platformUnstable.mp3'],
+    });
+    let playerDeathSound = new Howl({
+        src: ['../sound/explosion.mp3'],
+    });
 
     level.preload = () => {
         level.loadJSON('../levels.json', (data) => {
@@ -79,7 +93,8 @@ let sketch = (level) => {
             level.height,
             level.width * constants.PLAYER_WIDTH_RATIO,
             level.height * constants.PLAYER_HEIGHT_RATIO,
-            playerImage
+            playerImage,
+            jumpSound
         );
         platforms = currentLevel.platforms;
         if (window.DeviceOrientationEvent) {
@@ -143,6 +158,7 @@ let sketch = (level) => {
 
         if (player.y > cameraY + level.height || player.dead) {
             // Game over
+            playerDeathSound.play();
             let gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
             document.getElementById('resumeButton').style.display = 'none';
             document.getElementById('playAgainButton').style.display = 'block';
@@ -155,6 +171,7 @@ let sketch = (level) => {
             level.noLoop();
         } else if (platforms[0].finish && player.finished) {
             // Level finished
+            endSound.play();
             let gameOverModal = new bootstrap.Modal(document.getElementById('gameOverModal'));
             let levels = localStorage.getItem('levelOrder').split(',').map(Number);
 
@@ -171,8 +188,7 @@ let sketch = (level) => {
                 document.getElementById('playAgainButton').textContent = 'Go to Main Menu';
                 document.getElementById('ModalText').textContent = 'Dumbo is proud of you!';
                 gameOverModal.show();
-            }
-            else{
+            } else {
                 document.getElementById('resumeButton').style.display = 'none';
                 document.getElementById('playAgainButton').style.display = 'block';
 
@@ -194,6 +210,7 @@ let sketch = (level) => {
             destroy = platform.checkCollision(player, level);
             if (destroy === true) {
                 platformIndex = i;
+                platformSound.play();
                 break;
             }
         }
@@ -292,10 +309,9 @@ document.getElementById('playAgainButton').addEventListener('click', function ()
     let levelID = parseInt(localStorage.getItem('selectedLevelId'));
     if (document.getElementById('playAgainButton').textContent === 'Restart') {
         restartGame();
-    } else if (document.getElementById('playAgainButton').textContent === 'Go to Main Menu') { 
+    } else if (document.getElementById('playAgainButton').textContent === 'Go to Main Menu') {
         window.location.href = '../index.html';
-    }
-    else {
+    } else {
         if (levelID > levelAmount) {
             window.location.href = '../index.html';
         } else {

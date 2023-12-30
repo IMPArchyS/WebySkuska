@@ -10,6 +10,10 @@
     font-family: monospace;
 }
 
+.yellow-color {
+    color: yellow;
+}
+
 .gameBody {
     margin: 0;
     padding: 0;

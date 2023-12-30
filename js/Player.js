@@ -1,7 +1,7 @@
 import * as constants from './Constants.js';
 
 export default class Player {
-    constructor(x, y, width, height, img) {
+    constructor(x, y, width, height, img, sound) {
         this.img = img;
         this.x = x;
         this.y = y;
@@ -11,6 +11,7 @@ export default class Player {
         this.onGround = true;
         this.finished = false;
         this.dead = false;
+        this.jumpSound = sound;
     }
 
     jump(level) {
@@ -39,6 +40,7 @@ export default class Player {
     input(level, gamma) {
         if (this.dead || this.finished) return;
 
+        Howler.volume(0.7); // Set to 70%
         let gammaScale = 0.1;
         let moveSpeed = level.width * 0.01 + Math.abs(gamma) * gammaScale; // 1% of screen width per frame
 
@@ -59,6 +61,7 @@ export default class Player {
         // JUMP CHECK
         if (this.onGround) {
             console.log('PLAYER: ONGROUND');
+            this.jumpSound.play();
             this.yVelocity = constants.jumpForce;
             this.onGround = false;
         }
