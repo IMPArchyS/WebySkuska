@@ -6,8 +6,9 @@
     background-image: url('../images/backgrounds/svgs/main_menu.svg');
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: 50% 50%;
     font-family: monospace;
+    background-color: rgb(124, 193, 21);
 }
 
 .yellow-color {
@@ -32,7 +33,7 @@
 }
 
 .full-height {
-    height: 100vh;
+    min-height: 100vh;
 }
 
 #p5_loading {
